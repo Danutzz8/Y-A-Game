@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const turnIndicator = document.getElementById('turn-indicator');
     const timerDisplay = document.getElementById('timer-display');
     const gameModeSelect = document.getElementById('game-mode');
+    const difficultySelect = document.getElementById('difficulty');
     const timerModeSelect = document.getElementById('timer-mode');
     const startButton = document.getElementById('start-btn');
     const restartButton = document.getElementById('restart-btn');
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let stage = 1;
     let currentPlayer = 1;
     let gameMode = 1;
+    let difficulty = 'easy';
     let timerMode = 'none';
     let timeLeft = 0;
     let timerInterval = null;
@@ -31,56 +33,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateProblem() {
         let num1, num2, operator, answer;
-        const totalScore = gameMode === 1 ? score1 : Math.max(score1, score2);
 
-        if (totalScore < 10) {
-            stage = 1;
-            operator = '+';
-            num1 = Math.floor(Math.random() * 10) + 1;
-            num2 = Math.floor(Math.random() * 10) + 1;
+        let operators;
+        switch (difficulty) {
+            case 'easy':
+                operators = ['+'];
+                stage = 1;
+                break;
+            case 'medium':
+                operators = ['+', '-'];
+                stage = 2;
+                break;
+            case 'hard':
+                operators = ['+', '-', '×'];
+                stage = 3;
+                break;
+            case 'expert':
+                operators = ['+', '-', '×', '÷'];
+                stage = 4;
+                break;
+            default:
+                operators = ['+'];
+        }
+
+        operator = operators[Math.floor(Math.random() * operators.length)];
+
+        if (operator === '+') {
+            num1 = Math.floor(Math.random() * 15) + 1;
+            num2 = Math.floor(Math.random() * 15) + 1;
             answer = num1 + num2;
-        } else if (totalScore < 20) {
-            stage = 2;
-            operator = '-';
-            num1 = Math.floor(Math.random() * 10) + 1;
-            num2 = Math.floor(Math.random() * num1) + 1;
+        } else if (operator === '-') {
+            num1 = Math.floor(Math.random() * 15) + 5;
+            num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
             answer = num1 - num2;
-        } else if (totalScore < 30) {
-            stage = 3;
-            operator = '×';
-            num1 = Math.floor(Math.random() * 5) + 2;
-            num2 = Math.floor(Math.random() * 5) + 2;
+        } else if (operator === '×') {
+            num1 = Math.floor(Math.random() * 10) + 2;
+            num2 = Math.floor(Math.random() * 10) + 2;
             answer = num1 * num2;
-        } else if (totalScore < 40) {
-            stage = 4;
-            operator = '÷';
-            const divisor = Math.floor(Math.random() * 5) + 2;
-            answer = Math.floor(Math.random() * 5) + 2;
+        } else {
+            const divisor = Math.floor(Math.random() * 10) + 2;
+            answer = Math.floor(Math.random() * 10) + 2;
             num1 = divisor * answer;
             num2 = divisor;
-        } else {
-            stage = 5;
-            const operators = ['+', '-', '×', '÷'];
-            operator = operators[Math.floor(Math.random() * operators.length)];
-
-            if (operator === '+') {
-                num1 = Math.floor(Math.random() * 10) + 1;
-                num2 = Math.floor(Math.random() * 10) + 1;
-                answer = num1 + num2;
-            } else if (operator === '-') {
-                num1 = Math.floor(Math.random() * 10) + 5;
-                num2 = Math.floor(Math.random() * (num1 - 4)) + 1;
-                answer = num1 - num2;
-            } else if (operator === '×') {
-                num1 = Math.floor(Math.random() * 5) + 2;
-                num2 = Math.floor(Math.random() * 5) + 2;
-                answer = num1 * num2;
-            } else {
-                const divisor = Math.floor(Math.random() * 5) + 2;
-                answer = Math.floor(Math.random() * 5) + 2;
-                num1 = divisor * answer;
-                num2 = divisor;
-            }
         }
 
         problemElement.textContent = `${num1} ${operator} ${num2} = ?`;
@@ -192,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startGame() {
         gameMode = parseInt(gameModeSelect.value, 10);
+        difficulty = difficultySelect.value;
         timerMode = timerModeSelect.value;
         
         score1 = 0;
