@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Game for Kids</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Math Whiz!</h1>
+        <div id="setup">
+            <div class="mode-select">
+                <label>Mode:</label>
+                <select id="game-mode">
+                    <option value="1">1 Player</option>
+                    <option value="2">2 Players</option>
+                </select>
+            </div>
+            <div class="mode-select">
+                <label>Timer:</label>
+                <select id="timer-mode">
+                    <option value="none">No Timer</option>
+                    <option value="60">60 Seconds</option>
+                    <option value="120">2 Minutes</option>
+                    <option value="180">3 Minutes</option>
+                </select>
+            </div>
+            <button id="start-btn">Start Game</button>
+        </div>
+        <div id="game" style="display: none;">
+            <div id="timer-display"></div>
+            <div id="turn-indicator">Player 1's Turn</div>
+            <p id="problem"></p>
+            <input type="number" id="answer" autofocus>
+            <button id="submit">Submit</button>
+        </div>
+        <div id="feedback"></div>
+        <div class="info">
+            <p id="p1-score">Player 1: <span>0</span></p>
+            <p id="p2-score" style="display: none;">Player 2: <span>0</span></p>
+            <p>Stage: <span id="stage">1</span></p>
+        </div>
+        <div id="game-over" style="display: none;">
+            <h2 id="winner-text"></h2>
+            <button id="restart-btn">Play Again</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
